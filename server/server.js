@@ -20,6 +20,20 @@ io.on('connection', (socket) => {
     createdAt: 1234
   });
 
+  socket.emit('newMessage', {
+    from: "sample@example.com",
+    text: "sample chat",
+    createdAt: 1234
+  });
+
+  socket.on('createEmail', (newEmail) => {
+    console.log('newEmail', newEmail);
+  });
+
+  socket.on('createMessage', (newMessage) => {
+    console.log('newMessage', newMessage);
+  });
+
   socket.on('disconnect', () => {
     console.log('User was disconnected');
   })
