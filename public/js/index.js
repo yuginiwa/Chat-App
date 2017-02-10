@@ -4,6 +4,23 @@ var formattedTime = function (createdAt) {
   return moment(createdAt).format('h:mm a');
 }
 
+function scrollBottom () {
+  // Selectors
+  var messages = jQuery('#messages');
+  var newMessage = messages.children('li:last-child');
+
+  // Heights
+  var clientHeight = messages.prop('clientHeight');
+  var scrollTop = messages.prop('scrollTop');
+  var scrollHeight = messages.prop('scrollHeight');
+  var newMessageHeight = newMessage.innerHeight();
+  var lastMessageHeight = newMessage.prev().innerHeight();
+
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    messages.scrollTop(scrollHeight);
+  }
+};
+
 socket.on('connect', function ()  {
   console.log('connected');
 });
@@ -21,7 +38,7 @@ socket.on('newMessage', function (message) {
   });
 
   jQuery('#messages').append(html);
-
+  scrollBottom();
   // New code for rendering using mustache
   // var li = jQuery('<li></li>');
   // li.text(`${message.from} ${formattedTime(message.createdAt)}: ${message.text}`);
@@ -38,7 +55,7 @@ socket.on('newLocationMessage', function (message) {
   });
 
   jQuery('#messages').append(html);
-
+  scrollBottom();
   // New code for rendering using mustache
   // var li = jQuery('<li></li>');
   // var a = jQuery('<a target="_blank">My current location</a>');
